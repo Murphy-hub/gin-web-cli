@@ -13,7 +13,7 @@ import (
 {{with .Comment}}// {{$name}} {{.}}{{else}}// 定义 `{{$name}}` 结构.{{end}}
 type {{$name}} struct {
     {{- range .Fields}}{{$fieldName := .Name}}
-	{{$fieldName}} {{.Type}} `json:"{{.JSONTag}}"{{with .GormTag}} gorm:"{{.}}"{{end}}{{with .CustomTag}} {{raw .}}{{end}}`{{with .Comment}}// {{.}}{{end}}
+	{{$fieldName}} {{.Type}} `json:"{{.JSONTag}}"{{with .CustomTag}} {{raw .}}{{end}}`{{with .Comment}}// {{.}}{{end}}
 	{{- end}}
 }
 
