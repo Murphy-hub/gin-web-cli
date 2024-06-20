@@ -35,9 +35,9 @@ func (a {{$name}}) ToSchema{{$name}}() *schema.{{$name}} {
 	return item
 }
 
-type {{$name}}s []*{{$name}}
+type {{plural .Name}} []*{{$name}}
 
-func (a {{$name}}s) ToSchema{{$name}}s() []*schema.{{$name}} {
+func (a {{plural .Name}}) ToSchema{{plural .Name}}() []*schema.{{$name}} {
 	list := make([]*schema.{{$name}}, len(a))
 	for i, item := range a {
 		list[i] = item.ToSchema{{$name}}()

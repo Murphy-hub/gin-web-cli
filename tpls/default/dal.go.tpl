@@ -56,7 +56,7 @@ func (a *{{$name}}) Query(ctx context.Context, params schema.{{$name}}QueryParam
 
 	queryResult := &schema.{{$name}}QueryResult{
 		PageResult: pageResult,
-		Data:       list.ToSchema{{$name}}s(),
+		Data:       list.ToSchema{{plural .Name}}(),
 	}
 	return queryResult, nil
 }
@@ -111,9 +111,15 @@ func (a *{{$name}}) Create(ctx context.Context, item schema.{{$name}}) (*schema.
 
 // Update 更新数据库中指定的 {{lowerSpace .Name}}
 func (a *{{$name}}) Update(ctx context.Context, item schema.{{$name}}) error {
-    eitem := entity.Schema{{$name}}(item).To{{$name}}()
-	result := Get{{$name}}DB(ctx, a.DB).Where("id=?", item.ID).Select("*"){{if $includeCreatedAt}}.Omit("created_time"){{end}}.Updates(eitem)
-	return errors.WithStack(result.Error)
+	eitem := entity.Schema{{$name}}(item).To{{$name}}()
+    db := Get{{$name}}DB(ctx, a.DB).Where("id=?", item.ID)
+    if len(selectFields) > 0 {
+        db = db.Select(selectFields)
+    }{{if $includeCreatedAt}} else {
+        db = db.Omit("create_time")
+    }{{end}}
+    result := db.Updates(eitem)
+    return errors.WithStack(result.Error)
 }
 
 // Delete 从数据库中删除指定的 {{lowerSpace .Name}}

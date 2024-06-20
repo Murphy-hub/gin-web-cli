@@ -42,6 +42,15 @@ type {{$name}}QueryResult struct {
 // {{plural .Name}} 定义 `{{$name}}` 结构的切片
 type {{plural .Name}} []*{{$name}}
 
+// ToIDs 获取所有ID
+func (a {{plural .Name}}) ToIDs() []int {
+	var ids []int
+	for _, item := range a {
+		ids = append(ids, item.ID)
+	}
+	return ids
+}
+
 {{- if $includeSequence}}
 func (a {{plural .Name}}) Len() int {
 	return len(a)

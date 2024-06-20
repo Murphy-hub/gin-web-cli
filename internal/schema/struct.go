@@ -80,14 +80,14 @@ func (a *S) Format() *S {
 		}
 
 		fields = append(fields, &Field{
-			Name:    "CreatedTime",
+			Name:    "CreateTime",
 			Type:    "int64",
 			GormTag: "index;",
 			Comment: "Create time",
 			Order:   "DESC",
 		})
 		fields = append(fields, &Field{
-			Name:    "UpdatedTime",
+			Name:    "UpdateTime",
 			Type:    "int64",
 			GormTag: "index;",
 			Comment: "Update time",
@@ -101,9 +101,9 @@ func (a *S) Format() *S {
 			a.Include.ID = true
 		case "Status":
 			a.Include.Status = true
-		case "CreatedAt":
+		case "CreateTime":
 			a.Include.CreatedAt = true
-		case "UpdatedAt":
+		case "UpdateTime":
 			a.Include.UpdatedAt = true
 		case "Sequence":
 			a.Include.Sequence = true
