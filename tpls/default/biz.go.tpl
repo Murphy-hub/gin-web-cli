@@ -113,7 +113,7 @@ func (a *{{$name}}) Get(ctx context.Context, id int) (*schema.{{$name}}, error) 
 // Create 在数据访问对象中创建新的 {{lowerSpace .Name}}
 func (a *{{$name}}) Create(ctx context.Context, formItem *schema.{{$name}}Form) (*schema.{{$name}}, error) {
 	{{lowerCamel $name}} := &schema.{{$name}}{
-		{{if $includeCreatedAt}}CreatedAt:   time.Now().Unix() * 1000,{{end}}
+		{{if $includeCreatedAt}}CreateTime:   time.Now().UnixMilli(),{{end}}
 	}
 
 	{{- range .Fields}}
@@ -234,7 +234,7 @@ func (a *{{$name}}) Update(ctx context.Context, id int, formItem *schema.{{$name
     if err := formItem.FillTo({{lowerCamel $name}}); err != nil {
 		return err
 	}
-    {{if $includeUpdatedAt}}{{lowerCamel $name}}.UpdatedAt = time.Now(){{end}}
+    {{if $includeUpdatedAt}}{{lowerCamel $name}}.UpdatedTime = time.Now().UnixMilli(){{end}}
 	
 	return a.Trans.Exec(ctx, func(ctx context.Context) error {
 		if err := a.{{$name}}DAL.Update(ctx, *{{lowerCamel $name}}); err != nil {

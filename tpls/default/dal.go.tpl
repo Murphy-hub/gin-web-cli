@@ -110,7 +110,7 @@ func (a *{{$name}}) Create(ctx context.Context, item schema.{{$name}}) (*schema.
 }
 
 // Update 更新数据库中指定的 {{lowerSpace .Name}}
-func (a *{{$name}}) Update(ctx context.Context, item schema.{{$name}}) error {
+func (a *{{$name}}) Update(ctx context.Context, item schema.{{$name}}, selectFields ...string) error {
 	eitem := entity.Schema{{$name}}(item).To{{$name}}()
     db := Get{{$name}}DB(ctx, a.DB).Where("id=?", item.ID)
     if len(selectFields) > 0 {
