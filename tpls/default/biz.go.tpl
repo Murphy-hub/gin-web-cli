@@ -235,7 +235,6 @@ func (a *{{$name}}) Update(ctx context.Context, id int, formItem *schema.{{$name
 		return err
 	}
     {{if $includeUpdatedAt}}{{lowerCamel $name}}.UpdateTime = time.Now().UnixMilli(){{end}}
-	
 	return a.Trans.Exec(ctx, func(ctx context.Context) error {
 		if err := a.{{$name}}DAL.Update(ctx, *{{lowerCamel $name}}); err != nil {
 			return err
