@@ -114,7 +114,7 @@ func (a *{{$name}}) Update(ctx context.Context, item schema.{{$name}}) error {
 	eitem := entity.Schema{{$name}}(item).To{{$name}}()
     db := Get{{$name}}DB(ctx, a.DB).Where("id=?", item.ID)
     if len(selectFields) > 0 {
-        db = db.Select(selectFields)
+        db = db.Select(selectFields){{if $includeCreatedAt}}.Omit("create_time"){{end}}
     }{{if $includeCreatedAt}} else {
         db = db.Omit("create_time")
     }{{end}}
