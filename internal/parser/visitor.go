@@ -28,7 +28,7 @@ func (v *astModuleMainVisitor) Visit(node ast.Node) ast.Visitor {
 		}
 	case *ast.FuncDecl:
 		if x.Name.Name == "AutoMigrate" {
-			v.modifyAutoMigrate(x)
+			//v.modifyAutoMigrate(x)
 		} else if x.Name.Name == "RegisterV1Routers" {
 			v.modifyRegisterV1Routers(x)
 		}
