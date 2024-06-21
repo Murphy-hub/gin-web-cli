@@ -105,7 +105,7 @@ func (a *{{$name}}) Get(ctx context.Context, id int) (*schema.{{$name}}, error) 
 	if err != nil {
 		return nil, err
 	} else if {{lowerCamel $name}} == nil {
-		return nil, errors.NotFound("", "{{titleSpace $name}} not found")
+		return nil, errors.NotFound("{{titleSpace $name}} not found")
 	}
 	return {{lowerCamel $name}}, nil
 }
@@ -140,7 +140,7 @@ func (a *{{$name}}) Create(ctx context.Context, formItem *schema.{{$name}}Form) 
 		if err != nil {
 			return nil, err
 		} else if parent == nil {
-			return nil, errors.NotFound("", "Parent not found")
+			return nil, errors.NotFound("Parent not found")
 		}
 		{{lowerCamel $name}}.ParentPath = parent.ParentPath + parent.ID + util.TreePathDelimiter
 	}
@@ -167,13 +167,13 @@ func (a *{{$name}}) Create(ctx context.Context, formItem *schema.{{$name}}Form) 
 // Update 更新数据访问对象中指定的 {{lowerSpace .Name}}
 func (a *{{$name}}) Update(ctx context.Context, id int, formItem *schema.{{$name}}Form) error {
     if id == 0 {
-        return errors.NotFound("", "{{titleSpace $name}} not found")
+        return errors.NotFound("{{titleSpace $name}} not found")
     }
 	{{lowerCamel $name}}, err := a.{{$name}}DAL.Get(ctx, id)
 	if err != nil {
 		return err
 	} else if {{lowerCamel $name}} == nil {
-		return errors.NotFound("", "{{titleSpace $name}} not found")
+		return errors.NotFound("{{titleSpace $name}} not found")
 	}
 
 	{{- range .Fields}}
@@ -210,7 +210,7 @@ func (a *{{$name}}) Update(ctx context.Context, id int, formItem *schema.{{$name
 			if err != nil {
 				return err
 			} else if parent == nil {
-				return errors.NotFound("", "Parent not found")
+				return errors.NotFound("Parent not found")
 			}
 			{{lowerCamel $name}}.ParentPath = parent.ParentPath + parent.ID + util.TreePathDelimiter
 		} else {
@@ -270,7 +270,7 @@ func (a *{{$name}}) Delete(ctx context.Context, id int) error {
 	if err != nil {
 		return err
 	} else if {{lowerCamel $name}} == nil {
-		return errors.NotFound("", "{{titleSpace $name}} not found")
+		return errors.NotFound("{{titleSpace $name}} not found")
 	}
 
 	childResult, err := a.{{$name}}DAL.Query(ctx, schema.{{$name}}QueryParam{
@@ -288,7 +288,7 @@ func (a *{{$name}}) Delete(ctx context.Context, id int) error {
 	if err != nil {
 		return err
 	} else if !exists {
-		return errors.NotFound("", "{{titleSpace $name}} not found")
+		return errors.NotFound("{{titleSpace $name}} not found")
 	}
 	{{- end}}
 
