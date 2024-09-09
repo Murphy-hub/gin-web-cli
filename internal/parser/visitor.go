@@ -222,11 +222,11 @@ func (v *astModuleMainVisitor) modifyRegisterV1Routers(x *ast.FuncDecl) {
 		}
 
 		routes := [][]string{
-			{"GET", "\"\"", "Query"},
-			{"GET", "\":id\"", "Get"},
-			{"POST", "\"\"", "Create"},
-			{"PUT", "\":id\"", "Update"},
-			{"DELETE", "\":id\"", "Delete"},
+			{"GET", "\"list\"", "Query"},
+			{"GET", "\"get\"", "Get"},
+			{"POST", "\"create\"", "Create"},
+			{"PUT", "\"update\"", "Update"},
+			{"DELETE", "\"delete\"", "Delete"},
 		}
 
 		var blockList []ast.Stmt

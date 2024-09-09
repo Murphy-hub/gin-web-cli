@@ -17,29 +17,22 @@ type {{$name}} struct {
 // Query
 // @Tags {{$name}}API
 // @Security AccessToken
+// @Security ChildOrgId
 // @Summary 查询 {{lowerSpace .Name}} 列表
 {{- if not .DisablePagination}}
-// @Param current query int true "分页索引" default(1)
-// @Param pageSize query int true "分页大小" default(10)
+// @Param body body schema.{{$name}}QueryParam true "请求体"
 {{- end}}
-{{- range .Fields}}{{$fieldType := .Type}}
-{{- with .Query}}
-{{- if .InQuery}}
-// @Param {{.FormTag}} query {{convSwaggerType $fieldType}} false "{{.Comment}}"
-{{- end}}
-{{- end}}
-{{- end}}
-// @Success 200 {object} util.ResponseResult{data=[]schema.{{$name}}}
+// @Success 200 {object} util.ResponseResult{obj=util.ListResult{list=[]schema.{{$name}}}}
 // @Failure 401 {object} util.ResponseResult
 // @Failure 500 {object} util.ResponseResult
-// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}} [get]
+// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/list [post]
 func (a *{{$name}}) Query(c *gin.Context) {
 	ctx := c.Request.Context()
 	var params schema.{{$name}}QueryParam
-	if err := util.ParseQuery(c, &params); err != nil {
-		util.ResError(c, err)
-		return
-	}
+    if err := util.ParseJSON(c, &params); err != nil {
+        util.ResError(c, err)
+        return
+    }
 
 	result, err := a.{{$name}}BIZ.Query(ctx, params)
 	if err != nil {
@@ -52,12 +45,13 @@ func (a *{{$name}}) Query(c *gin.Context) {
 // Get
 // @Tags {{$name}}API
 // @Security AccessToken
+// @Security ChildOrgId
 // @Summary 按ID获取 {{lowerSpace .Name}} 记录
-// @Param id path string true "unique id"
+// @Param body body util.IDRequest true "请求体"
 // @Success 200 {object} util.ResponseResult{data=schema.{{$name}}}
 // @Failure 401 {object} util.ResponseResult
 // @Failure 500 {object} util.ResponseResult
-// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/{id} [get]
+// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/get [post]
 func (a *{{$name}}) Get(c *gin.Context) {
 	ctx := c.Request.Context()
 	idRequest := new(util.IDRequest)
@@ -82,7 +76,7 @@ func (a *{{$name}}) Get(c *gin.Context) {
 // @Failure 400 {object} util.ResponseResult
 // @Failure 401 {object} util.ResponseResult
 // @Failure 500 {object} util.ResponseResult
-// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}} [post]
+// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/create [post]
 func (a *{{$name}}) Create(c *gin.Context) {
 	ctx := c.Request.Context()
 	item := new(schema.{{$name}}Form)
@@ -106,13 +100,12 @@ func (a *{{$name}}) Create(c *gin.Context) {
 // @Tags {{$name}}API
 // @Security AccessToken
 // @Summary 按ID更新 {{lowerSpace .Name}} 记录
-// @Param id path string true "unique id"
 // @Param body body schema.{{$name}}Form true "请求体"
 // @Success 200 {object} util.ResponseResult
 // @Failure 400 {object} util.ResponseResult
 // @Failure 401 {object} util.ResponseResult
 // @Failure 500 {object} util.ResponseResult
-// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/{id} [put]
+// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/update [post]
 func (a *{{$name}}) Update(c *gin.Context) {
 	ctx := c.Request.Context()
 	item := new(schema.{{$name}}Form)
@@ -135,11 +128,11 @@ func (a *{{$name}}) Update(c *gin.Context) {
 // @Tags {{$name}}API
 // @Security AccessToken
 // @Summary 按ID删除 {{lowerSpace .Name}} 记录
-// @Param id path string true "unique id"
+// @Param body body util.IDRequest true "请求体"
 // @Success 200 {object} util.ResponseResult
 // @Failure 401 {object} util.ResponseResult
 // @Failure 500 {object} util.ResponseResult
-// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/{id} [delete]
+// @Router /api/v1/{{if .FillRouterPrefix}}{{lower .Module}}/{{end}}{{lowerHyphensPlural .Name}}/delete [post]
 func (a *{{$name}}) Delete(c *gin.Context) {
 	ctx := c.Request.Context()
 	idRequest := new(util.IDRequest)

@@ -68,15 +68,15 @@ func (a {{plural .Name}}) Swap(i, j int) {
 }
 {{- end}}
 
-{{- if $treeTpl}}
-func (a {{plural .Name}}) ToMap() map[string]*{{$name}} {
-	m := make(map[string]*{{$name}})
+func (a {{plural .Name}}) ToMap() map[int]*{{$name}} {
+	m := make(map[int]*{{$name}})
 	for _, item := range a {
 		m[item.ID] = item
 	}
 	return m
 }
 
+{{- if $treeTpl}}
 func (a {{plural .Name}}) SplitParentIDs() []string {
 	parentIDs := make([]string, 0, len(a))
 	idMapper := make(map[string]struct{})
